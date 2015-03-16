@@ -4,13 +4,17 @@ __author__ = 'mbaxpac2'
 from KP import KP
 
 
-def enum(kp):
+def enum(kp, verbose=False):
     """ Solve a KP instance by enumeration. """
+
+    counter = 0
 
     best_sol = -1
     best_sol_val = 0
 
-    for subset in range(2 ** kp.n - 1):
+    n_search_space = 2 ** kp.n - 1
+
+    for subset in range(n_search_space):
         # Enumeration process
         sol = bin(subset)[2:]
 
@@ -28,6 +32,11 @@ def enum(kp):
                 best_sol_val = val
                 best_sol = evaluation
 
+        counter += 1
+
+        if verbose and counter % 100000 == 0:
+            print('{0:.2f}% of the search space enumerated so far'.format(counter / n_search_space * 100))
+
     if best_sol_val != -1:
         print('Best feasible solution found: {0} {1}\n{2}'.format(best_sol['value'],
                                                                   best_sol['weight'],
@@ -38,4 +47,4 @@ def enum(kp):
 kp_instance = KP('easy.20.kp.txt')
 #kp_instance = KP('my_test.txt')
 
-enum(kp_instance)
+enum(kp_instance, True)

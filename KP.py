@@ -41,6 +41,9 @@ class KP:
         elif opt == 2:
             self.items.sort(key=lambda item: item.value / item.weight, reverse=True)
 
+        # Used for greedy approximation
+        self.current_item_ix = 0
+
     def __str__(self):
         s = str(self.n) + '\n'
 
@@ -50,6 +53,9 @@ class KP:
         s += str(self.c)
 
         return s
+
+    def __iter__(self):
+        return iter(self.items)
 
     def evaluate_solution(self, sol):
         """ Evaluate a solution in binary string format in the instance. """
