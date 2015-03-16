@@ -16,7 +16,7 @@ class Item:
 class KP:
     """ Class for creating instances of KP problems. """
 
-    def __init__(self, filename):
+    def __init__(self, filename, opt=None):
         with open(filename) as f:
 
             self.n = int(f.readline())
@@ -35,6 +35,11 @@ class KP:
                 self.items.append(Item(label, value, weight))
 
             self.c = int(f.readline())
+
+        if opt == 1:
+            self.items.sort(key=lambda item: item.value, reverse=True)
+        elif opt == 2:
+            self.items.sort(key=lambda item: item.value / item.weight, reverse=True)
 
     def __str__(self):
         s = str(self.n) + '\n'
