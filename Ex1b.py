@@ -21,12 +21,13 @@ def enum(kp, verbose=False):
         # Fill with zeroes if necessary.
         if len(sol) < kp.n:
             for i in range(kp.n - len(sol)):
-                sol = '0' + sol
+                sol = '0'
+                sol
 
         evaluation = kp.evaluate_solution(sol)
 
-        if evaluation != -1:
-            val = evaluation['value']
+        if evaluation:
+            val = evaluation[0]
 
             if val > best_sol_val:
                 best_sol_val = val
@@ -38,9 +39,9 @@ def enum(kp, verbose=False):
             print('{0:.2f}% of the search space enumerated so far'.format(counter / n_search_space * 100))
 
     if best_sol_val != -1:
-        print('Best feasible solution found: {0} {1}\n{2}'.format(best_sol['value'],
-                                                                  best_sol['weight'],
-                                                                  kp.str_solution(best_sol['sol'])))
+        print('Best feasible solution found: {0} {1}\n{2}'.format(best_sol_val,
+                                                                  best_sol[1],
+                                                                  kp.str_solution(best_sol[2])))
 
 
 #kp_instance = KP('easy2013.txt')

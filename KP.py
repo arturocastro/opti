@@ -41,8 +41,8 @@ class KP:
         elif opt == 2:
             self.items.sort(key=lambda item: item.value / item.weight, reverse=True)
 
-        # Used for greedy approximation
-        self.current_item_ix = 0
+        for item in self.items:
+            print(item)
 
     def __str__(self):
         s = str(self.n) + '\n'
@@ -71,9 +71,35 @@ class KP:
                 solution_weight += self.items[i].weight
 
         if solution_weight <= self.c:
-            return {'value': solution_value, 'weight': solution_weight, 'sol': sol}
+            return solution_value, solution_weight, sol
         else:
-            return -1
+            return False
+
+    def frac_upper_bound(self, sol):
+        """ Evaluate a solution in binary string format in the instance. """
+
+        ob = 0
+        solution_weight = 0
+
+        for i in range(len(sol)):
+            # Iterate every item if KP instance.
+            if sol[i] == '1':
+                current_item = self.items[i]
+
+                if solution_weight + current_item.weight > self.c:
+                    allowed_weight = self.c - solution_weight
+
+                    ob += int(allowed_weight * current_item.value / current_item.weight)
+
+                    break
+
+                ob += current_item.value
+                solution_weight += current_item.weight
+
+                if solution_weight == self.c:
+                    break
+
+        return ob
 
     def str_solution(self, sol):
         """ Return a string with the labels of the items present in a solution in binary string format. """
@@ -85,4 +111,7 @@ class KP:
                 s += str(self.items[i].label) + ' '
 
         return s
+
+    def is_feasible(self, solution, assigned_items):
+        return self.evaluate_solution(solution[:assigned_items])
 

@@ -6,9 +6,9 @@ from KP import KP
 #def greedy_approx(kp):
 
 # Create instance of KP problem from file.
-#kp = KP('easy.20.kp.txt', opt=2)
+kp = KP('easy.20.kp.txt', opt=2)
 #kp = KP('easy.200.kp.txt', opt=2)
-kp = KP('hard.200.kp.txt', opt=2)
+#kp = KP('hard.200.kp.txt', opt=2)
 
 # Print instance of problem.
 #print(kp_instance)
