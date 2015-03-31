@@ -16,7 +16,7 @@ class Item:
 class KP:
     """ Class for creating instances of KP problems. """
 
-    def __init__(self, filename, opt=None):
+    def __init__(self, filename, opt=None, verbose=False):
         with open(filename) as f:
 
             self.n = int(f.readline())
@@ -41,8 +41,9 @@ class KP:
         elif opt == 2:
             self.items.sort(key=lambda item: float(item.value) / item.weight, reverse=True)
 
-        #for item in self.items:
-            #print(item)
+        if verbose:
+            for item in self.items:
+                print(item)
 
     def __str__(self):
         s = str(self.n) + '\n'
@@ -67,7 +68,7 @@ class KP:
             lim = len(sol)
 
         for i in range(lim):
-            # Iterate every item if KP instance.
+            # Iterate every item if KP instance (up to lim).
             if sol[i] == '1':
                 # Sum values and weights of items that are present in solution.
                 solution_value += self.items[i].value
@@ -79,7 +80,7 @@ class KP:
             return False
 
     def frac_upper_bound(self, sol):
-        """ Evaluate a solution in binary string format in the instance. """
+        """ Return upper bound for a partial solution, where unspecified items are considered as 1's """
 
         ob = 0
         solution_weight = 0
@@ -91,16 +92,21 @@ class KP:
                 current_item = self.items[i]
 
                 if solution_weight + current_item.weight > capacity:
+                    # If adding whole current item will exceed capacity, get allowed weight and add fraction
                     allowed_weight = capacity - solution_weight
 
+                    # Add fraction of value corresponding to allowed weight to bound.
                     ob += int(allowed_weight * current_item.value / current_item.weight)
 
+                    # Exit as capacity has been reached.
                     break
 
+                # If whole current value can be safely added, continue algorithm
                 ob += current_item.value
                 solution_weight += current_item.weight
 
                 if solution_weight == capacity:
+                    # Exit as capacity has been reached.
                     break
 
         return ob

@@ -23,9 +23,9 @@ class Solution:
         return ''.join(solution)
 
 # Sort the items (as for greedy)
-#kp = KP('easy.20.kp.txt', opt=2)
-#kp = KP('easy.200.kp.txt', opt=2)
-kp = KP('hard.200.kp.txt', opt=2)
+#kp = KP('easy.20.kp.txt', opt=2, verbose=True)
+#kp = KP('easy.200.kp.txt', opt=2, verbose=True)
+kp = KP('hard.200.kp.txt', opt=2, verbose=True)
 
 # Best_solution_value = 0
 best_solution_value = 0
@@ -41,6 +41,7 @@ current.bound = curr_bound = kp.frac_upper_bound(current.bin_str)
 # Add_to_priorityQueue (Current)
 pq = [current]
 
+# Stop when feasible solutions are exhausted, or when the best sol found is better than the best optimistic upper bound
 while len(pq) != 0 and best_solution_value < curr_bound:
     current = heapq.heappop(pq)
     curr_bound = current.bound
@@ -87,6 +88,8 @@ while len(pq) != 0 and best_solution_value < curr_bound:
                 best_solution_weight = right_solution_evaluation[1]
 
                 print('val={0} weight={1}\n{2}'.format(best_solution_value, best_solution_weight, right))
+
+    print(len(pq), best_solution_value, curr_bound)
 
 if kp.verify_solution(best_solution, best_solution_value, best_solution_weight):
     print('Best feasible solution found: {0} {1}\n{2}'.format(best_solution_value,
