@@ -1,7 +1,9 @@
 __author__ = 'mbaxpac2'
 
+divisor = 8000
+
 N_ITEMS = 4
-W = 2400000/8000
+W = 2400000//divisor
 
 
 def xray_v(n):
@@ -52,7 +54,7 @@ def bed_v(n):
         return False
 
 
-w = [80000/8000, 400000/8000, 120000/8000, 8000/8000]
+w = [80000//divisor, 400000//divisor, 120000//divisor, 8000//divisor]
 
 V = N_ITEMS * [None]
 keep = N_ITEMS * [None]
@@ -72,7 +74,7 @@ def bellman(i, curr_w):
     maxi = 0
     k = 0
 
-    for ni in range(curr_w / w[i] + 1):
+    for ni in range(curr_w // w[i] + 1):
         if i <= 2 and ni > 3:
             break
 
@@ -96,7 +98,7 @@ def dp():
 
 dp()
 
-"""print('\t\t\t'.join(map(str, range(0, (W + 1) * 8000, 8000))))
+"""print('\t\t\t'.join(map(str, range(0, (W + 1) * divisor, divisor))))
 
 for item_list in V:
     print('\t\t\t'.join(map(str, item_list)))
@@ -113,7 +115,8 @@ K = W
 for i in range(N_ITEMS - 1, -1, -1):
     if keep[i][K] > 0:
         ni = keep[i][K]
-        print('i={0}\t\tni={1}\t\tpeople={2}\t\tcost={3}'.format(i, ni, v[i](ni), w[i] * ni * 8000))
+        print('i={0}\t\tni={1}\t\tpeople={2}\t\tcost={3}'.format(i, ni, v[i](ni), w[i] * ni * divisor))
         K -= w[i] * ni
 
 print('result={0}'.format(V[N_ITEMS - 1][W]))
+print('size_i={0} size_w={1} table_size={2}'.format(N_ITEMS, W, N_ITEMS * W))
