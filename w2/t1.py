@@ -95,21 +95,25 @@ def dp():
 
 
 dp()
-print(V[N_ITEMS - 1][W])
 
-print('\t\t\t'.join(map(str, range(0, (W + 1) * 8000, 8000))))
+"""print('\t\t\t'.join(map(str, range(0, (W + 1) * 8000, 8000))))
 
 for item_list in V:
     print('\t\t\t'.join(map(str, item_list)))
 
-print '\n'
+print('')
 
 for item_list in keep:
     print('\t\t\t'.join(map(str, item_list)))
+
+print('')"""
 
 K = W
 
 for i in range(N_ITEMS - 1, -1, -1):
     if keep[i][K] > 0:
-        print i, keep[i][K], 'people={0} cost={1}'.format(v[i](keep[i][K]), w[i] * keep[i][K] * 8000)
-        K -= w[i] * keep[i][K]
+        ni = keep[i][K]
+        print('i={0}\t\tni={1}\t\tpeople={2}\t\tcost={3}'.format(i, ni, v[i](ni), w[i] * ni * 8000))
+        K -= w[i] * ni
+
+print('result={0}'.format(V[N_ITEMS - 1][W]))
