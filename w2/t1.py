@@ -1,9 +1,15 @@
 __author__ = 'mbaxpac2'
 
-divisor = 8000
+from fractions import gcd
+
+divisor = gcd(gcd(gcd(2400000000, 80000), 400000), 8000)
+
+print(divisor)
 
 N_ITEMS = 4
 W = 2400000//divisor
+
+w = (80000//divisor, 400000//divisor, 120000//divisor, 8000//divisor)
 
 
 def xray_v(n):
@@ -53,8 +59,6 @@ def bed_v(n):
     else:
         return False
 
-
-w = [80000//divisor, 400000//divisor, 120000//divisor, 8000//divisor]
 
 V = N_ITEMS * [None]
 keep = N_ITEMS * [None]
