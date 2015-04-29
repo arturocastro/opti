@@ -2,11 +2,18 @@
 
 
 # CHANGE these seed values 
-seed1=45454
-seed2=6645242
-seed3=656543
-seed4=23232
-seed5=76644
+#seed1=45454
+#seed2=6645242
+#seed3=656543
+#seed4=23232
+#seed5=76644
+
+seed1=7927561
+seed2=1862263
+seed3=1209739
+seed4=3656678
+seed5=1896942
+
 
 if [ -e ea_runs.txt ]; then
     rm ea_runs.txt
