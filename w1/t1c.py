@@ -7,8 +7,8 @@ from KP import KP
 
 # Create instance of KP problem from file.
 #kp = KP('easy.20.kp.txt', opt=2)
-#kp = KP('easy.200.kp.txt', opt=2)
-kp = KP('hard.200.kp.txt', opt=2)
+kp = KP('easy.200.kp.txt', opt=2)
+#kp = KP('hard.200.kp.txt', opt=2)
 
 # Print instance of problem.
 #print(kp_instance)
@@ -19,7 +19,7 @@ sol_item_str = ''
 
 for item in kp:
     if sol_weight + item.weight > kp.c:
-        break
+        continue
 
     sol_value += item.value
     sol_weight += item.weight
