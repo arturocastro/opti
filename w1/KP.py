@@ -18,7 +18,6 @@ class KP:
 
     def __init__(self, filename, opt=None, verbose=False):
         with open(filename) as f:
-
             self.n = int(f.readline())
 
             self.items = []
@@ -104,10 +103,6 @@ class KP:
                 # If whole current value can be safely added, continue algorithm
                 ob += current_item.value
                 solution_weight += current_item.weight
-
-                if solution_weight == capacity:
-                    # Exit as capacity has been reached.
-                    break
 
         return ob
 
