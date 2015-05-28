@@ -2,14 +2,18 @@ __author__ = 'mbaxpac2'
 
 from fractions import gcd
 
-divisor = gcd(gcd(gcd(2400000000, 80000), 400000), 8000)
-
-print(divisor)
+divisor = gcd(gcd(gcd(2400000000, 80000), 320000), 8000)
 
 N_ITEMS = 4
-W = 2400000//divisor
+C = 2400000//divisor
+w = (80000//divisor, 320000//divisor, 120000//divisor, 8000//divisor)
 
-w = (80000//divisor, 400000//divisor, 120000//divisor, 8000//divisor)
+V = N_ITEMS * [None]
+keep = N_ITEMS * [None]
+
+for i in range(N_ITEMS):
+    V[i] = (C + 1) * [0]
+    keep[i] = (C + 1) * [0]
 
 
 def xray_v(n):
@@ -60,21 +64,10 @@ def bed_v(n):
         return False
 
 
-V = N_ITEMS * [None]
-keep = N_ITEMS * [None]
-
-for i in range(N_ITEMS):
-    V[i] = (W + 1) * [0]
-    keep[i] = (W + 1) * [0]
-
 v = (xray_v, nmr_v, rad_v, bed_v)
 
 
 def bellman(i, curr_w):
-    global V
-    global v
-    global w
-
     maxi = 0
     k = 0
 
@@ -91,16 +84,10 @@ def bellman(i, curr_w):
     return maxi, k
 
 
-def dp():
-    global V
-    global keep
-
-    for i in range(N_ITEMS):
-        for curr_w in range(W + 1):
-            V[i][curr_w], keep[i][curr_w] = bellman(i, curr_w)
-
-
-dp()
+# DP
+for i in range(N_ITEMS):
+    for curr_w in range(C + 1):
+        V[i][curr_w], keep[i][curr_w] = bellman(i, curr_w)
 
 """print('\t\t\t'.join(map(str, range(0, (W + 1) * divisor, divisor))))
 
@@ -114,7 +101,7 @@ for item_list in keep:
 
 print('')"""
 
-K = W
+K = C
 
 for i in range(N_ITEMS - 1, -1, -1):
     if keep[i][K] > 0:
@@ -122,5 +109,5 @@ for i in range(N_ITEMS - 1, -1, -1):
         print('i={0}\t\tni={1}\t\tpeople={2}\t\tcost={3}'.format(i, ni, v[i](ni), w[i] * ni * divisor))
         K -= w[i] * ni
 
-print('result={0}'.format(V[N_ITEMS - 1][W]))
-print('size_i={0} size_w={1} table_size={2}'.format(N_ITEMS, W, N_ITEMS * W))
+print('result={0}'.format(V[N_ITEMS - 1][C]))
+print('size_i={0} size_w={1} table_size={2}'.format(N_ITEMS, C, N_ITEMS * (C + 1)))
