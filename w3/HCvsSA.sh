@@ -9,6 +9,8 @@
 #seed5=76644
 
 # New random seeds from random.org
+# Best for hc: seed1
+# Best for sa: seed3
 seed1=2587836
 seed2=5489256
 seed3=5099546
@@ -29,7 +31,7 @@ echo "hc and sa searches running..."
 for (( r=1; r<=5; r++ ))
 do 
     ./sa $((seed$r)) 500000 0 0 0 >> hc_runs.txt
-    ./sa $((seed$r)) 500000 CHANGE THESE PARAMETERS >> sa_runs.txt
+    ./sa $((seed$r)) 500000 79700 1 500000 >> sa_runs.txt
     echo "seed="$((seed$r))
 done
 echo "done"

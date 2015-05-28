@@ -100,7 +100,7 @@ int hashsearch(char *v)
 
 
 
-int evaluate_sol(sol *s)
+int evaluate_sol(sol *s, int j)
 {
   int i, ch, fitness;
 
@@ -163,7 +163,7 @@ void print_allocation(sol *s)
 {
   int i, proj;
   char id[30];
-  evaluate_sol(s);
+  evaluate_sol(s, 0);
   printf("Complete List of Project Allocations Made:\n");
   printf("STUDENT\tCHOICE\tPRJ_ID\tN_ALLOC\tMAX\n");
   for(i=1;i<=157;i++)
@@ -271,13 +271,16 @@ int main(int argc, char **argv)
 
   for(i=1;i<=157;i++)    // for every student
     s->x[i]=1+(int)(RN*5);   // give them a project choice between 1 and 5
-  f=evaluate_sol(s);
+  f=evaluate_sol(s, 0);
+
+  
 
   for(j=0;j<MAXITERS;j++)
     {
       *c=*s;
       for(i=1;i<=157;i++)
 	{
+	  // Mutate assignments by a little bit!
 	  if(RN<1.0/157.0)
 	    c->x[i]++;
 	  else if(RN<1.0/157.0)
@@ -288,7 +291,9 @@ int main(int argc, char **argv)
 	    c->x[i]=1;
 	  
 	}
-      g=evaluate_sol(c);
+      g=evaluate_sol(c, j);
+      printf("j%d %d\n", j, g);
+      
       if((g<f)||((exp((f-g)/T) > RN)))
 	{
 	  f=g;
@@ -305,13 +310,16 @@ int main(int argc, char **argv)
       if(j<stop_cooling)
 	T*=gc;
 
+//      if (j == 628)
+//	  break;
+
     }
   // optimization ended
   
   printf("%d Fitness= %d Best= %d\n",MAXITERS,f, best);
   
   // re-evaluate the best ever
-  evaluate_sol(be);
+  evaluate_sol(be, 0);
 
   // print out over-allocated projects (i.e. violations) first
   printf("\n\n=== RESULTS (last random solution) ===\n\nOver-allocated projects (violations) :\n");

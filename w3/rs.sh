@@ -15,6 +15,7 @@
 
 
 # New random seeds from random.org
+# Best: seed8
 seed1=8364435
 seed2=3390711
 seed3=5613637

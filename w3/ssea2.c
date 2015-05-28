@@ -319,7 +319,7 @@ int main(int argc, char **argv)
   seed=atol(argv[1]);
   srand(seed);
   MAXITERS=atoi(argv[2]);
-  pergenome=atof(argv[3]);
+  pergenome=atol(argv[3]);
   tsize = atoi(argv[4]);
   tsize2 = atoi(argv[5]);
 

@@ -1,0 +1,208 @@
+mutation
+5
+worst
+2
+EA searches running...
+seed=7927561
+seed=1862263
+seed=1209739
+seed=3656678
+seed=1896942
+done
+====== Steady State EA ======
+violation statistics
+mean SD SE
+1.8 2.16 0.657267
+
+Plot is in plot_ea.ps
+Mean
+3346
+worst
+5
+EA searches running...
+seed=7927561
+seed=1862263
+seed=1209739
+seed=3656678
+seed=1896942
+done
+====== Steady State EA ======
+violation statistics
+mean SD SE
+2.2 0.56 0.334664
+
+Plot is in plot_ea.ps
+Mean
+3950
+worst
+10
+EA searches running...
+seed=7927561
+seed=1862263
+seed=1209739
+seed=3656678
+seed=1896942
+done
+====== Steady State EA ======
+violation statistics
+mean SD SE
+2.2 0.96 0.438178
+
+Plot is in plot_ea.ps
+Mean
+3966
+worst
+20
+EA searches running...
+seed=7927561
+seed=1862263
+seed=1209739
+seed=3656678
+seed=1896942
+done
+====== Steady State EA ======
+violation statistics
+mean SD SE
+3 0.8 0.4
+
+Plot is in plot_ea.ps
+Mean
+4566
+worst
+30
+EA searches running...
+seed=7927561
+seed=1862263
+seed=1209739
+seed=3656678
+seed=1896942
+done
+====== Steady State EA ======
+violation statistics
+mean SD SE
+3 0.8 0.4
+
+Plot is in plot_ea.ps
+Mean
+4768
+worst
+50
+EA searches running...
+seed=7927561
+seed=1862263
+seed=1209739
+seed=3656678
+seed=1896942
+done
+====== Steady State EA ======
+violation statistics
+mean SD SE
+1.2 1.36 0.521536
+
+Plot is in plot_ea.ps
+Mean
+3100
+mutation
+10
+worst
+2
+EA searches running...
+seed=7927561
+seed=1862263
+seed=1209739
+seed=3656678
+seed=1896942
+done
+====== Steady State EA ======
+violation statistics
+mean SD SE
+1 0.8 0.4
+
+Plot is in plot_ea.ps
+Mean
+2966
+worst
+5
+EA searches running...
+seed=7927561
+seed=1862263
+seed=1209739
+seed=3656678
+seed=1896942
+done
+====== Steady State EA ======
+violation statistics
+mean SD SE
+2.4 0.64 0.357771
+
+Plot is in plot_ea.ps
+Mean
+4244
+worst
+10
+EA searches running...
+seed=7927561
+seed=1862263
+seed=1209739
+seed=3656678
+seed=1896942
+done
+====== Steady State EA ======
+violation statistics
+mean SD SE
+1.6 0.64 0.357771
+
+Plot is in plot_ea.ps
+Mean
+3454
+worst
+20
+EA searches running...
+seed=7927561
+seed=1862263
+seed=1209739
+seed=3656678
+seed=1896942
+done
+====== Steady State EA ======
+violation statistics
+mean SD SE
+1.6 0.64 0.357771
+
+Plot is in plot_ea.ps
+Mean
+3422
+worst
+30
+EA searches running...
+seed=7927561
+seed=1862263
+seed=1209739
+seed=3656678
+seed=1896942
+done
+====== Steady State EA ======
+violation statistics
+mean SD SE
+1.6 0.64 0.357771
+
+Plot is in plot_ea.ps
+Mean
+3460
+worst
+50
+EA searches running...
+seed=7927561
+seed=1862263
+seed=1209739
+seed=3656678
+seed=1896942
+done
+====== Steady State EA ======
+violation statistics
+mean SD SE
+2.2 0.96 0.438178
+
+Plot is in plot_ea.ps
+Mean
+4030
