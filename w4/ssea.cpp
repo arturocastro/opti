@@ -4,7 +4,10 @@
 #include <algorithm>
 #include "hv-1.3-src/hv.h"
 
-#define RN (rand() / (RAND_MAX + 1.0))
+int random(void)
+{
+    return rand() / RAND_MAX + 1.0;
+}
 
 long seed;
 const int pareto_size = 100;
@@ -96,7 +99,7 @@ void sol_init(sol* s)
 
     for (int i = 1; i <= n_vars; ++i)
     {
-	double rn = RN;
+	double rn = random();
 
 	if (rn > 0.5)
 	{
@@ -116,9 +119,9 @@ void mutate(sol *c)
     
     for(int i = 1; i <= 157; ++i)
     {
-	if(RN < mrate / 157.0)
+	if(random() < mrate / 157.0)
 	    c->x[i]++;
-	else if(RN < mrate / 157.0)
+	else if(random() < mrate / 157.0)
 	    c->x[i]--;
 
 	if(c->x[i] == '2')
@@ -139,7 +142,7 @@ int tourn_worst()
     int i = 0;
     while(i < tourn_size)
     {
-	mem = (int)(RN * pareto_size);
+	mem = (int)(random() * pareto_size);
 
 	if(pareto[mem].f < worst_fitness)
 	{
@@ -164,7 +167,7 @@ int tournament_select()
     int i = 0;
     while(i < tourn_size)
     {
-	mem = (int)(RN * pareto_size);
+	mem = (int)(random() * pareto_size);
 
 	if(pareto[mem].f > best_fitness)
 	{
@@ -224,7 +227,7 @@ void crossover(sol* p1, sol* p2, sol* ch)
 {
     for (int i = 1; i <= n_vars; ++i)
     {
-	if (RN > 0.5)
+	if (random() > 0.5)
 	{
 	    ch->x[i] = p1->x[i];
 	}
@@ -348,7 +351,7 @@ int main(int argc, char** argv)
     {
 	int parent_a=tournament_select();
 
-	if(RN < 0.7)  // this is p_c the crossover probability
+	if(random() < 0.7)  // this is p_c the crossover probability
 	{
 	    int parent_b = tournament_select();
 	    crossover(&pareto[parent_a], &pareto[parent_b], &mutant); //sexual reproduction
