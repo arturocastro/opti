@@ -49,17 +49,6 @@ bool myfunction2 (const sol& i, const sol& j) { return (i.objs[0] > j.objs[0]); 
 bool myfunction3 (const sol& i, const sol& j) { return (i.f < j.f); }
 
 
-void solcpy(sol* a, sol* b)
-{
-    a->f = b->f;
-    
-    a->objs[0] = b->objs[0];
-    a->objs[1] = b->objs[1];
-
-    strcpy(a->x, b->x);
-}
-
-
 int nondominated_rank(int n, int rank)
 {
     std::sort(pareto, pareto + n, myfunction1);
@@ -253,8 +242,6 @@ void crossover(sol* p1, sol* p2, sol* ch)
 
 void evaluate_sol(sol* s)
 {
-    int ch, fitness;
-    
     s->objs[0] = 0;
     s->objs[1] = 0;
     s->f = 0;
@@ -371,12 +358,12 @@ int main(int argc, char** argv)
 	    crossover(&pareto[parent_a], &pareto[parent_b], &mutant); //sexual reproduction
 	}
 	else
-	    solcpy(&mutant, &pareto[parent_a]); // clone the parent 
+	    mutant = pareto[parent_a]; // clone the parent 
 	
 	mutate(&mutant); // always mutate
 	
 	evaluate_sol(&mutant);
-	solcpy(&pareto[tourn_worst()], &mutant);
+	pareto[tourn_worst()] = mutant;
 	nondominated_sorting();
 	
 	fit = pareto_hv(&front_idx);
@@ -393,14 +380,14 @@ int main(int argc, char** argv)
 	    best_ever = fit;
 	    
 	    for (int j = 0; j < pareto_size; ++j)
-		solcpy(&be[j], &pareto[j]);
+		be[j] = pareto[j];
 	}
 
 	fflush(stdout);
     }
 
     for (int i = 0; i < pareto_size; ++i)
-	solcpy(&pareto[i], &be[i]);
+	pareto[i] = be[i];
 
     nondominated_sorting();
     
