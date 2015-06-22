@@ -1,3 +1,5 @@
+//
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -28,8 +30,6 @@ int n_clauses;
 int** clauses;
 
 sol population[population_size];
-
-sol mutant;
 sol best[population_size];  // holds best ever solution - population front!
 
 
@@ -192,10 +192,22 @@ void initialize(void)
     sscanf(str, "p cnf %d %d", &n_vars, &n_clauses);
     
     clauses = (int**)malloc((n_clauses + 1) * sizeof(int*));
+    
+    if (clauses == 0)
+    {
+	perror("Unable to allocate memory.");
+	exit(2);
+    }
 
     for (int i = 1; i <= n_clauses; ++i)
     {
 	clauses[i] = (int*)malloc(3 * sizeof(int));
+
+	if (clauses[i] == 0)
+	{
+	    perror("Unable to allocate memory.");
+	    exit(2);
+	}
     }
 
     for (int i = 1; i <= n_clauses; ++i)
@@ -215,20 +227,20 @@ void initialize(void)
 	sol_init(&population[i]);
 	sol_init(&best[i]);
     }
-
-    sol_init(&mutant);
 }
 
 
-/*void finalize(void)
+void finalize(void)
 {
-    clauses = (int**)malloc((n_clauses + 1) * sizeof(int*));
-
     for (int i = 1; i <= n_clauses; ++i)
     {
-	clauses[i] = (int*)malloc(3 * sizeof(int));
+	free(clauses[i]);
+	clauses[i] = 0;
     }
-}*/
+
+    free(clauses);
+    clauses = 0;
+}
 
 
 void crossover(sol* p1, sol* p2, sol* ch)
@@ -291,19 +303,19 @@ void print_clauses(void)
 }
 
 
-double population_hv(int* ret)
+double population_hv(int* front_idx_ret)
 {
     double ref[] = {0.0, 0.0};
     double front[200];
 
-    int front_ix = 0;
+    int front_idx = 0;
 
     int front_size = 1;
 
     int front_f = population[population_size - 1].f;
 
-    front[front_ix++] = -population[population_size - 1].objs[0];
-    front[front_ix++] = -population[population_size - 1].objs[1];
+    front[front_idx++] = -population[population_size - 1].objs[0];
+    front[front_idx++] = -population[population_size - 1].objs[1];
 
     for (int i = population_size - 2; i > 0; --i)
     {
@@ -311,8 +323,8 @@ double population_hv(int* ret)
 	    (population[i].objs[0] == population[i + 1].objs[0]) && (population[i].objs[1] == population[i + 1].objs[1]))
 	{
 	    ++front_size;
-	    front[front_ix++] = -population[i].objs[0];
-	    front[front_ix++] = -population[i].objs[1];
+	    front[front_idx++] = -population[i].objs[0];
+	    front[front_idx++] = -population[i].objs[1];
 	}
 	else
 	{
@@ -320,8 +332,8 @@ double population_hv(int* ret)
 	}
     }
     
-    *ret = front_ix;
-    return fpli_hv(front, 2, front_ix, ref);
+    *front_idx_ret = front_idx;
+    return fpli_hv(front, 2, front_idx, ref);
 }
 
 
@@ -329,7 +341,7 @@ int main(int argc, char** argv)
 {
     if(argc != 6)
     {
-	fprintf(stderr,"Arguments: seed max_iters pergenome tsize1 tsize2\n");
+	perror("Arguments: seed max_iters pergenome tsize1 tsize2");
 	exit(1);
     }
     
@@ -349,6 +361,8 @@ int main(int argc, char** argv)
     
     int  best_ever = -1;
     int front_idx;
+
+    sol mutant;
     
     for(int i = population_size; i <= max_iters; ++i)
     {
