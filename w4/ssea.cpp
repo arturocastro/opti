@@ -1,7 +1,3 @@
-
-// Steady State Evolutionary Algorithm for the Student-Project Assignment Problem
-// (C) Joshua Knowles 2011
-
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
