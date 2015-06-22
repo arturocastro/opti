@@ -8,12 +8,12 @@
 #include <algorithm>
 #include "hv-1.3-src/hv.h"
 
-#define RN (rand()/(RAND_MAX+1.0))
+#define RN (rand() / (RAND_MAX + 1.0))
 
 long seed;
 const int pareto_size = 100;
-int MAXITERS=500000;
-double pergenome=1.0; // mutation rate per genome. So if this is set to 1.0 the expected number of mutations per individual is 1.0
+int MAXITERS = 500000;
+double pergenome = 1.0; // mutation rate per genome. So if this is set to 1.0 the expected number of mutations per individual is 1.0
 int tsize;  // tournament size
 int tsize2;  // tournament size for selection of a poor individual to be replaced
 
@@ -27,7 +27,7 @@ typedef struct solution
 int n_vars;
 int n_clauses;
 
-int ** clauses;
+int** clauses;
 
 sol pareto[pareto_size];
 
@@ -37,20 +37,19 @@ sol be[pareto_size];  // holds best ever solution - pareto front!
 
 void print_pareto(void)
 {
-    int i;
-    for (i = 0; i < pareto_size; ++i)
+    for (int i = 0; i < pareto_size; ++i)
     {
 	printf("#%d : %s : n_pos=%d, n_sat_clauses=%d, f=%d\n", i, pareto[i].x, pareto[i].objs[1], pareto[i].objs[0], pareto[i].f);
     }
 }
 
 
-bool myfunction1 (const sol & i, const sol & j) { return (i.objs[1]>j.objs[1]); }
-bool myfunction2 (const sol & i, const sol & j) { return (i.objs[0]>j.objs[0]); }
-bool myfunction3 (const sol & i, const sol & j) { return (i.f<j.f); }
+bool myfunction1 (const sol& i, const sol& j) { return (i.objs[1] > j.objs[1]); }
+bool myfunction2 (const sol& i, const sol& j) { return (i.objs[0] > j.objs[0]); }
+bool myfunction3 (const sol& i, const sol& j) { return (i.f < j.f); }
 
 
-void solcpy(sol * a, sol * b)
+void solcpy(sol* a, sol* b)
 {
     a->f = b->f;
     
@@ -70,9 +69,7 @@ int nondominated_rank(int n, int rank)
 
     int ranks_assigned = 0;
 
-    int i;
-
-    for (i = 0; i < n; ++i)
+    for (int i = 0; i < n; ++i)
     {
 	if (pareto[i].objs[1] > last)
 	{
@@ -102,7 +99,7 @@ void nondominated_sorting()
 }
 
 
-void sol_init(sol * s)
+void sol_init(sol* s)
 {
     s->objs[0] = 0;
     s->objs[1] = 0;
@@ -112,8 +109,7 @@ void sol_init(sol * s)
     s->x[0] = '!';
     s->x[pareto_size] = '\0';
 
-    int i;
-    for (i = 1; i <= n_vars; ++i)
+    for (int i = 1; i <= n_vars; ++i)
     {
 	double rn = RN;
 
@@ -132,66 +128,69 @@ void sol_init(sol * s)
 void mutate(sol *c)
 {
     double mrate=pergenome/2.0;
-    int i;
     
-    for(i=1;i<=157;i++)
+    for(int i = 1; i <= 157; ++i)
     {
-	if(RN<mrate/157.0)
+	if(RN < mrate / 157.0)
 	    c->x[i]++;
-	else if(RN<mrate/157.0)
+	else if(RN < mrate / 157.0)
 	    c->x[i]--;
 
-	if(c->x[i]=='2')
-	    c->x[i]='1';
-	if(c->x[i]=='/')
-	    c->x[i]='0';   
+	if(c->x[i] == '2')
+	    c->x[i] = '1';
+	if(c->x[i] == '/')
+	    c->x[i] = '0';   
     }
 }
 
 int tourn_worst()
 {
-    int tourn_size=tsize2;
+    int tourn_size = tsize2;
     
-    int i;
     int mem;
-    
     int poorest;
-    double worst_fitness=-1e20;
-    i=0;
-    while(i<tourn_size)
+    double worst_fitness = -1e20;
+    
+    int i = 0;
+    while(i < tourn_size)
     {
-	mem=(int)(RN*pareto_size);
-	if(pareto[mem].f<worst_fitness)
+	mem = (int)(RN * pareto_size);
+
+	if(pareto[mem].f < worst_fitness)
 	{
-	    worst_fitness=pareto[mem].f;
-	    poorest=mem;
+	    worst_fitness = pareto[mem].f;
+	    poorest = mem;
 	}
+
 	++i;
     }
-    return(poorest);
+
+    return poorest;
 }
 
 
 int tournament_select()
 {
-    int tourn_size=tsize;
-    int i;
-    int mem;
-    
+    int tourn_size = tsize;
+    int mem;    
     int fittest;
-    double best_fitness=-1;
-    i=0;
-    while(i<tourn_size)
+    double best_fitness = -1;
+
+    int i = 0;
+    while(i < tourn_size)
     {
-	mem=(int)(RN*pareto_size);
-	if(pareto[mem].f>best_fitness)
+	mem = (int)(RN * pareto_size);
+
+	if(pareto[mem].f > best_fitness)
 	{
-	    best_fitness=pareto[mem].f;
-	    fittest=mem;
+	    best_fitness = pareto[mem].f;
+	    fittest = mem;
 	}
+
 	++i;
     }
-    return(fittest);
+
+    return fittest;
 }
 
 
@@ -207,25 +206,26 @@ void initialize(void)
     
     sscanf(str, "p cnf %d %d", &n_vars, &n_clauses);
     
-    int i;
+    clauses = (int**)malloc((n_clauses + 1) * sizeof(int*));
 
-    clauses = (int**)malloc((n_clauses + 1) * sizeof(int *));
-    for (i = 1; i <= n_clauses; ++i)
+    for (int i = 1; i <= n_clauses; ++i)
     {
 	clauses[i] = (int*)malloc(3 * sizeof(int));
     }
 
-    for (i = 1; i <= n_clauses; ++i)
+    for (int i = 1; i <= n_clauses; ++i)
     {
-	int j;
-	for (j = 0; j < 3; ++j)
+	int j = 0;
+
+	for (; j < 3; ++j)
 	{
 	    scanf("%d", &clauses[i][j]);
 	}
+
 	scanf("%d", &j);
     }
 
-    for (i = 0; i < pareto_size; ++i)
+    for (int i = 0; i < pareto_size; ++i)
     {
 	sol_init(&pareto[i]);
 	sol_init(&be[i]);
@@ -235,10 +235,9 @@ void initialize(void)
 }
 
 
-void crossover(sol *p1, sol *p2, sol *ch)
+void crossover(sol* p1, sol* p2, sol* ch)
 {
-    int i;
-    for (i = 1; i <= n_vars; ++i)
+    for (int i = 1; i <= n_vars; ++i)
     {
 	if (RN > 0.5)
 	{
@@ -252,22 +251,21 @@ void crossover(sol *p1, sol *p2, sol *ch)
 }
 
 
-void evaluate_sol(sol * s)
+void evaluate_sol(sol* s)
 {
-    int i, ch, fitness;
+    int ch, fitness;
     
     s->objs[0] = 0;
     s->objs[1] = 0;
     s->f = 0;
      
-    for (i = 1; i <= n_vars; ++i)
+    for (int i = 1; i <= n_vars; ++i)
 	if (s->x[i] == '1')
 	    s->objs[1]++; // n_positives
     
-    for (i = 1; i <= n_clauses; ++i)
+    for (int i = 1; i <= n_clauses; ++i)
     {
-	int j = 0;
-	for (; j < 3; ++j)
+	for (int j = 0; j < 3; ++j)
 	{
 	    int var = clauses[i][j];
 	    int ix = abs(var);
@@ -285,21 +283,21 @@ void evaluate_sol(sol * s)
 
 void print_clauses(void)
 {
-    int i;
-    for (i = 1; i <= n_clauses; ++i)
+    for (int i = 1; i <= n_clauses; ++i)
     {
-	int j;
 	printf("c%d: ", i);
-	for (j = 0; j < 3; ++j)
+
+	for (int j = 0; j < 3; ++j)
 	{
 	    printf("%d ", clauses[i][j]);
 	}
+
 	puts("");
     }
 }
 
 
-double pareto_hv(int * ret)
+double pareto_hv(int* ret)
 {
     double ref[] = {0.0, 0.0};
     double front[200];
@@ -313,18 +311,17 @@ double pareto_hv(int * ret)
     front[front_ix++] = -pareto[pareto_size - 1].objs[0];
     front[front_ix++] = -pareto[pareto_size - 1].objs[1];
 
-    int i = pareto_size - 2;
-    for (; i > 0; --i)
+    for (int i = pareto_size - 2; i > 0; --i)
     {
 	if (pareto[i].f == front_f)
 	{
-	    front_size++;
+	    ++front_size;
 	    front[front_ix++] = -pareto[i].objs[0];
 	    front[front_ix++] = -pareto[i].objs[1];
 	}
 	else if ((pareto[i].objs[0] == pareto[i + 1].objs[0]) && (pareto[i].objs[1] == pareto[i + 1].objs[1]))
 	{
-	    front_size++;
+	    ++front_size;
 	    front[front_ix++] = -pareto[i].objs[0];
 	    front[front_ix++] = -pareto[i].objs[1];
 	}
@@ -339,41 +336,39 @@ double pareto_hv(int * ret)
 }
 
 
-int main(int argc, char **argv)
+int main(int argc, char** argv)
 {
-    if(argc!=6)
+    if(argc != 6)
     {
 	fprintf(stderr,"Arguments: seed MAXITERS pergenome tsize1 tsize2\n");
 	exit(1);
     }
     
-    seed=atol(argv[1]);
+    seed = atol(argv[1]);
     srand(seed);
-    MAXITERS=atoi(argv[2]);
-    pergenome=atof(argv[3]);
+    MAXITERS = atoi(argv[2]);
+    pergenome = atof(argv[3]);
     tsize = atoi(argv[4]);
     tsize2 = atoi(argv[5]);
     
-    int parent_a, parent_b;
-    int i,j;
-    
     initialize();
     
-    for (i = 0; i < pareto_size; ++i)
+    for (int i = 0; i < pareto_size; ++i)
 	evaluate_sol(&pareto[i]);
     
     nondominated_sorting();
     
-    int fit,  best_ever=-1;
+    int fit, best_ever = -1;
     int front_idx;
     
-    for(i=pareto_size;i<=MAXITERS;++i)
+    for(int i = pareto_size; i <= MAXITERS; ++i)
     {
-	parent_a=tournament_select();
-	if(RN<0.7)  // this is p_c the crossover probability
+	int parent_a=tournament_select();
+
+	if(RN < 0.7)  // this is p_c the crossover probability
 	{
-	    parent_b=tournament_select();
-	    crossover(&pareto[parent_a],&pareto[parent_b],&mutant); //sexual reproduction
+	    int parent_b = tournament_select();
+	    crossover(&pareto[parent_a], &pareto[parent_b], &mutant); //sexual reproduction
 	}
 	else
 	    solcpy(&mutant, &pareto[parent_a]); // clone the parent 
@@ -386,24 +381,25 @@ int main(int argc, char **argv)
 	
 	fit = pareto_hv(&front_idx);
 	
-	if(i%1000==1)
+	if(i % 1000 == 1)
 	{
 	    //print_pareto();
 	    printf("%d Fitness= %d Best= %d front_idx= %d\n", i, fit, best_ever, front_idx);
 	}
 	
-	if(fit>best_ever)
+	if(fit > best_ever)
 	{
 	    //printf("%d Fitness= %d Best= %d front_idx= %d\n", i, fit, best_ever, front_idx);
-	    best_ever=fit;
+	    best_ever = fit;
 	    
-	    for (j = 0; j < pareto_size; ++j)
+	    for (int j = 0; j < pareto_size; ++j)
 		solcpy(&be[j], &pareto[j]);
 	}
+
 	fflush(stdout);
     }
 
-    for (i = 0; i < pareto_size; ++i)
+    for (int i = 0; i < pareto_size; ++i)
 	solcpy(&pareto[i], &be[i]);
 
     nondominated_sorting();
@@ -411,21 +407,20 @@ int main(int argc, char **argv)
     print_pareto();
     printf("Best ever = %d\n", best_ever);
 
-    FILE * all = fopen("all.dat", "w");
+    FILE* all = fopen("all.dat", "w");
 
-    for (i = 0; i < pareto_size; ++i)
+    for (int i = 0; i < pareto_size; ++i)
 	fprintf(all, "%d %d\n", pareto[i].objs[0], pareto[i].objs[1]);
 
     fclose(all);
 
-    FILE * nondominated = fopen("nondominated.dat", "w");
+    FILE* nondominated = fopen("nondominated.dat", "w");
 
     int front_f = pareto[pareto_size - 1].f;    
 
     fprintf(nondominated, "%d %d\n", pareto[pareto_size -1 ].objs[0], pareto[pareto_size - 1].objs[1]);
 
-    i = pareto_size - 2;
-    for (; i > 0; --i)
+    for (int i = pareto_size - 2; i > 0; --i)
     {
 	if (pareto[i].f == front_f)
 	{
